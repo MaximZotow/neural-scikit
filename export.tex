@@ -1,0 +1,1211 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    	\setmainfont{Times New Roman}
+    	\setmonofont{JetBrains Mono}
+    	\setsansfont{JetBrains Mono}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{export}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{ux43cux430ux448ux438ux43dux43dux43eux435-ux43eux431ux443ux447ux435ux43dux438ux435-ux432-jupyter-notebook}{%
+\section{Машинное обучение в Jupyter
+Notebook}\label{ux43cux430ux448ux438ux43dux43dux43eux435-ux43eux431ux443ux447ux435ux43dux438ux435-ux432-jupyter-notebook}}
+
+    Первым делом необходимо импортировать необходимые для обучения
+библиотеки
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} \PY{c+c1}{\PYZsh{} for matrix operations}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{neural\PYZus{}network} \PY{k+kn}{import} \PY{n}{MLPRegressor} \PY{k}{as} \PY{n}{mlp} \PY{c+c1}{\PYZsh{} main ml class}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt} \PY{c+c1}{\PYZsh{} для построения графиков}
+\PY{c+c1}{\PYZsh{} show plot inside notebook}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline 
+\PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k+kn}{import} \PY{n}{set\PYZus{}matplotlib\PYZus{}formats} \PY{c+c1}{\PYZsh{}  hi\PYZhy{}res plots}
+\PY{n}{set\PYZus{}matplotlib\PYZus{}formats}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pdf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{png}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k+kn}{from} \PY{n+nn}{joblib} \PY{k+kn}{import} \PY{n}{dump}\PY{p}{,} \PY{n}{load} \PY{c+c1}{\PYZsh{} для загрузки и выгрузки моделей}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/tmp/ipykernel\_787542/2688301736.py:7: DeprecationWarning:
+`set\_matplotlib\_formats` is deprecated since IPython 7.23, directly use
+`matplotlib\_inline.backend\_inline.set\_matplotlib\_formats()`
+  set\_matplotlib\_formats('pdf', 'png')
+    \end{Verbatim}
+
+    \hypertarget{ux434ux43eux431ux430ux432ux43bux435ux43dux438ux435-ux434ux430ux43dux43dux44bux445}{%
+\subsection{Добавление
+данных}\label{ux434ux43eux431ux430ux432ux43bux435ux43dux438ux435-ux434ux430ux43dux43dux44bux445}}
+
+У нас имеются экспериментальные данные полнофакторного эксперимента по
+измерению характеристик фотонного кристалла в зависимости от времени
+распыления магнетрона и мощности на нём. В качестве входных данных
+выступают два массива: мощность на магнетроне X1 и время распыления X2
+
+Выходные параметры -- ширина запрещённой зоны, нм; длина отражённой
+волны, нм; степень отражения, \%
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}input}
+\PY{n}{X0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{X1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{150}\PY{p}{,} \PY{l+m+mi}{150}\PY{p}{,} \PY{l+m+mi}{200}\PY{p}{,} \PY{l+m+mi}{200}\PY{p}{]}\PY{p}{)}
+\PY{n}{X2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}output}
+\PY{n}{Y1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{53.5}\PY{p}{,} \PY{l+m+mf}{50.5}\PY{p}{,} \PY{l+m+mf}{56.5}\PY{p}{,} \PY{l+m+mi}{38}\PY{p}{]}\PY{p}{)}
+\PY{n}{Y2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{571.5}\PY{p}{,} \PY{l+m+mf}{556.5}\PY{p}{,} \PY{l+m+mi}{575}\PY{p}{,} \PY{l+m+mf}{532.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{Y3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{18.9}\PY{p}{,} \PY{l+m+mf}{8.185}\PY{p}{,} \PY{l+m+mf}{12.05}\PY{p}{,} \PY{l+m+mf}{5.775}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{ux43dux43eux440ux43cux430ux43bux438ux437ux430ux446ux438ux44f-ux434ux430ux43dux43dux44bux445}{%
+\subsection{Нормализация
+данных}\label{ux43dux43eux440ux43cux430ux43bux438ux437ux430ux446ux438ux44f-ux434ux430ux43dux43dux44bux445}}
+
+Для корректной работы нейросети данные неоходимо нормализровать в
+пределах \(x\in[-1;1]\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{n}{X1}\PY{p}{,} \PY{p}{(}\PY{n}{X1}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{X1}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{X2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{n}{X2}\PY{p}{,} \PY{p}{(}\PY{n}{X2}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{X2}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{ux432ux44bux431ux43eux440-ux43eux43fux442ux438ux43cux430ux43bux44cux43dux44bux445-ux43fux430ux440ux430ux43cux435ux442ux440ux43eux432-ux434ux43bux44f-ux43eux431ux443ux447ux435ux43dux438ux44f}{%
+\subsection{Выбор оптимальных параметров для
+обучения}\label{ux432ux44bux431ux43eux440-ux43eux43fux442ux438ux43cux430ux43bux44cux43dux44bux445-ux43fux430ux440ux430ux43cux435ux442ux440ux43eux432-ux434ux43bux44f-ux43eux431ux443ux447ux435ux43dux438ux44f}}
+
+При обучении необходимо учитывать множество факторов, среди них:
+
+\begin{itemize}
+    \item размерность сети;
+    \item число скрытых слоёв;
+    \item функция активации;
+    \item оптимизатор.
+\end{itemize}
+
+\hypertarget{ux43cux435ux442ux43eux434ux44b-ux43aux43eux43dux442ux440ux43eux43bux44f}{%
+\subsubsection{Методы
+контроля}\label{ux43cux435ux442ux43eux434ux44b-ux43aux43eux43dux442ux440ux43eux43bux44f}}
+
+В качестве метода контроля за качеством обучения предлагается следующий
+алгоритм:
+
+\begin{enumerate}
+    \item Взять заранее рассчитанные математические модели из {\Large (вставить предыдущий пункт)};
+    \item Подставить в них некие случайные значения, то есть получить отображение $\mathbb{X}\rightarrow \mathbb{Y}$;
+    \item Использовать полученные массивы в качестве \textit{test}-выборки для проверки качества полученной модели.
+\end{enumerate}
+
+Создадим 4 варианта тестирований:
+
+\begin{enumerate}
+    \item \textit{X\_matmod\_test, y\_matmod\_test}, для удобства отображения предсказаний моделей с неизменными размерностями на входе и выходе;
+    \item \textit{X\_matmod\_test\_12, y\_matmod\_test}, для удобства отображения предсказаний модели с двумя входными векторами и тремя выходными;
+    \item \textit{X\_matmod\_test\_full, y\_matmod\_test\_full}, для валидации моделей с неизменными размерностями на входе и выходе;
+    \item \textit{X\_matmod\_test\_notfull, y\_matmod\_test\_full}, для валидации модели с двумя входными векторами и тремя выходными;
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} создадим 3 массива размерностью 1000 (входные данные для валидации)}
+\PY{n}{X0\PYZus{}matmod} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{X1\PYZus{}matmod} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{)}
+\PY{n}{X2\PYZus{}matmod} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} создадим массивы небольшой размерности для удобства сверки}
+\PY{n}{X0\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)} \PY{c+c1}{\PYZsh{} генерация 4 единиц в массив}
+\PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{X1\PYZus{}matmod}\PY{p}{,}\PY{n}{size} \PY{o}{=} \PY{l+m+mi}{4}\PY{p}{,} \PY{n}{replace} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)} \PY{c+c1}{\PYZsh{} генерация 4 значений без повторений}
+\PY{n}{X2\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{X2\PYZus{}matmod}\PY{p}{,}\PY{n}{size} \PY{o}{=} \PY{l+m+mi}{4}\PY{p}{,} \PY{n}{replace} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+\PY{n}{X\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X0\PYZus{}matmod\PYZus{}test}\PY{p}{,} \PY{n}{X1\PYZus{}matmod\PYZus{}test}\PY{p}{,} \PY{n}{X2\PYZus{}matmod\PYZus{}test}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} сборка массива и транспонирование}
+\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}12} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X1\PYZus{}matmod\PYZus{}test}\PY{p}{,} \PY{n}{X2\PYZus{}matmod\PYZus{}test}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} специальный массив без X0 для проверки необходимости в X0}
+
+\PY{c+c1}{\PYZsh{} генерация выходных данных из рассчитанной модели для теста}
+\PY{n}{y1\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{l+m+mf}{49.625} \PY{o}{\PYZhy{}} \PY{l+m+mf}{2.375} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{\PYZhy{}} \PY{l+m+mf}{5.375} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test} \PY{o}{\PYZhy{}} \PY{l+m+mf}{3.875} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test} \PY{c+c1}{\PYZsh{} вычисляем Y при помощи X}
+\PY{n}{y2\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{l+m+mf}{558.875} \PY{o}{\PYZhy{}} \PY{l+m+mf}{5.125} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{\PYZhy{}} \PY{l+m+mf}{14.375} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test} \PY{o}{\PYZhy{}} \PY{l+m+mf}{6.875} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test}
+\PY{n}{y3\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{l+m+mf}{11.122} \PY{o}{\PYZhy{}} \PY{l+m+mf}{2.315} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{\PYZhy{}} \PY{l+m+mf}{4.2475} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test} \PY{o}{+} \PY{l+m+mf}{1.11} \PY{o}{*} \PY{n}{X1\PYZus{}matmod\PYZus{}test} \PY{o}{*} \PY{n}{X2\PYZus{}matmod\PYZus{}test}
+\PY{n}{y\PYZus{}matmod\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{y1\PYZus{}matmod\PYZus{}test}\PY{p}{,} \PY{n}{y2\PYZus{}matmod\PYZus{}test}\PY{p}{,} \PY{n}{y3\PYZus{}matmod\PYZus{}test}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} получаем на выходе три массива}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}12}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y\PYZus{}matmod\PYZus{}test}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} генерируем большой массив для более точной сверки}
+\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X0\PYZus{}matmod}\PY{p}{,} \PY{n}{X1\PYZus{}matmod}\PY{p}{,} \PY{n}{X2\PYZus{}matmod}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} сборка большого массива и транспонирование}
+\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}notfull} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X1\PYZus{}matmod}\PY{p}{,} \PY{n}{X2\PYZus{}matmod}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} специальный массив без X0 для проверки необходимости в X0}
+\PY{n}{y1\PYZus{}matmod\PYZus{}test\PYZus{}full} \PY{o}{=} \PY{l+m+mf}{49.625} \PY{o}{\PYZhy{}} \PY{l+m+mf}{2.375} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{\PYZhy{}} \PY{l+m+mf}{5.375} \PY{o}{*} \PY{n}{X2\PYZus{}matmod} \PY{o}{\PYZhy{}} \PY{l+m+mf}{3.875} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{*} \PY{n}{X2\PYZus{}matmod} \PY{c+c1}{\PYZsh{} вычисляем Y при помощи X}
+\PY{n}{y2\PYZus{}matmod\PYZus{}test\PYZus{}full} \PY{o}{=} \PY{l+m+mf}{558.875} \PY{o}{\PYZhy{}} \PY{l+m+mf}{5.125} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{\PYZhy{}} \PY{l+m+mf}{14.375} \PY{o}{*} \PY{n}{X2\PYZus{}matmod} \PY{o}{\PYZhy{}} \PY{l+m+mf}{6.875} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{*} \PY{n}{X2\PYZus{}matmod}
+\PY{n}{y3\PYZus{}matmod\PYZus{}test\PYZus{}full} \PY{o}{=} \PY{l+m+mf}{11.122} \PY{o}{\PYZhy{}} \PY{l+m+mf}{2.315} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{\PYZhy{}} \PY{l+m+mf}{4.2475} \PY{o}{*} \PY{n}{X2\PYZus{}matmod} \PY{o}{+} \PY{l+m+mf}{1.11} \PY{o}{*} \PY{n}{X1\PYZus{}matmod} \PY{o}{*} \PY{n}{X2\PYZus{}matmod}
+\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{y1\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,} \PY{n}{y2\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,} \PY{n}{y3\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.          0.48348348  0.33533534]
+ [ 1.         -0.20920921 -0.74174174]
+ [ 1.          0.73773774 -0.36536537]
+ [ 1.          0.04904905 -0.28328328]]
+[[ 0.48348348  0.33533534]
+ [-0.20920921 -0.74174174]
+ [ 0.73773774 -0.36536537]
+ [ 0.04904905 -0.28328328]]
+[[ 46.04604905 550.46206417   8.7583622 ]
+ [ 53.50741432 569.54287771  14.92911628]
+ [ 50.88119401 562.19933497  10.66683289]
+ [ 51.08499841 562.7913474   12.196274  ]]
+    \end{Verbatim}
+
+    \hypertarget{ux432ux43bux438ux44fux43dux438ux435-ux440ux430ux437ux43cux435ux440ux43dux43eux441ux442ux438-ux441ux435ux442ux438-ux43dux430-ux43aux430ux447ux435ux441ux442ux432ux43e-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Влияние размерности сети на качество
+модели}\label{ux432ux43bux438ux44fux43dux438ux435-ux440ux430ux437ux43cux435ux440ux43dux43eux441ux442ux438-ux441ux435ux442ux438-ux43dux430-ux43aux430ux447ux435ux441ux442ux432ux43e-ux43cux43eux434ux435ux43bux438}}
+
+Создадим 2 массива \(\mathbb{X}\): с 2 и 3 элементами соответственно.
+Сделано это для потому, что нейронной сети очень сложно сделать
+отображение из меньшей размерности в большую. Вектор \(X0\) является ни
+чем иным, как вектором-заглушкой, не вносящим изменения в модель, но
+искусственно раздувающий размерность.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}012\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X0}\PY{p}{,}\PY{n}{X1}\PY{p}{,}\PY{n}{X2}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} вектор размерности 3}
+\PY{n}{X\PYZus{}12\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{X1}\PY{p}{,}\PY{n}{X2}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} вектор размерности 2}
+\PY{n}{X\PYZus{}012\PYZus{}train} 
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[ 1.,  1.,  1.,  1.],
+       [-1., -1.,  1.,  1.],
+       [-1.,  1., -1.,  1.]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Создадим 1 массив \(\mathbb{Y}\), поскольку нас интересует 3 выходных
+параметра. Размерность этого вектора мы варьировать не будем
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Y\PYZus{}train}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{Y1}\PY{p}{,}\PY{n}{Y2}\PY{p}{,}\PY{n}{Y3}\PY{p}{]}\PY{p}{)}
+\PY{n}{Y\PYZus{}train}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[ 53.5  ,  50.5  ,  56.5  ,  38.   ],
+       [571.5  , 556.5  , 575.   , 532.5  ],
+       [ 18.9  ,   8.185,  12.05 ,   5.775]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{ux442ux440ux430ux43dux441ux43fux43eux440ux438ux440ux43eux432ux430ux43dux438ux435-ux43cux430ux441ux441ux438ux432ux43eux432}{%
+\subsubsection{Транспорирование
+массивов}\label{ux442ux440ux430ux43dux441ux43fux43eux440ux438ux440ux43eux432ux430ux43dux438ux435-ux43cux430ux441ux441ux438ux432ux43eux432}}
+
+Получившиеся выше массивы не совсем подходят для обработки. Нам
+необходимо отображение комбинаций \(\mathbb{X}\) в комбинации
+\(\mathbb{Y}\). Для этого транспонируем обе матрицы.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}012\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{)}
+\PY{n}{X\PYZus{}12\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{X\PYZus{}12\PYZus{}train}\PY{p}{)}
+\PY{n}{X\PYZus{}012\PYZus{}train}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[ 1., -1., -1.],
+       [ 1., -1.,  1.],
+       [ 1.,  1., -1.],
+       [ 1.,  1.,  1.]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Y\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{Y\PYZus{}train}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[ 53.5  , 571.5  ,  18.9  ],
+       [ 50.5  , 556.5  ,   8.185],
+       [ 56.5  , 575.   ,  12.05 ],
+       [ 38.   , 532.5  ,   5.775]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{ux441ux43eux437ux434ux430ux43dux438ux435-ux430ux440ux445ux438ux442ux435ux43aux442ux443ux440ux44b-ux43cux43eux434ux435ux43bux438}{%
+\subsubsection{Создание архитектуры
+модели}\label{ux441ux43eux437ux434ux430ux43dux438ux435-ux430ux440ux445ux438ux442ux435ux43aux442ux443ux440ux44b-ux43cux43eux434ux435ux43bux438}}
+
+Создадим 2 модели, отвечающие за размерности векторов. Оставим все
+значения по умолчанию кроме входных параметров.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}012} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{)}
+\PY{n}{model\PYZus{}12} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Проведём обучение моделей на заранее подготовленных выборках
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}012}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{model\PYZus{}12}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}12\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+MLPRegressor(max\_iter=1000000, random\_state=1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Проведём проверку качества работы моделей при помощи заранее
+заготовленных тестов. Функция \textit{score} -- функция
+\(\mathbb{R}^2\). Наилучшая возможная оценка -- 1, и она может быть
+отрицательной (потому что модель может быть произвольно хуже).
+Постоянная модель, которая всегда предсказывает ожидаемое значение y,
+игнорируя входные характеристики, получит оценку 0. \begin{equation}
+R = \left(1-\frac{u}{v}\right)
+\end{equation}
+
+\begin{itemize}
+\item $u$ -- остаточная сумма квадратов. Метод оценки разницы между данными и оценочной моделью. Чем меньше разница, тем лучше оценка. По существу измеряет разброс ошибок моделирования. Другими словами, он показывает, как изменение зависимой переменной в регрессионной модели не может быть объяснено с помощью модели. Как правило, более низкая остаточная сумма квадратов указывает на то, что регрессионная модель может лучше объяснить данные, в то время как более высокая остаточная сумма квадратов указывает на то, что модель плохо объясняет данные.
+\begin{equation}
+    u = \sum\limits_{i=1}^{n} \left(y_i-\hat{y}_i\right)^2
+\end{equation}
+    \begin{itemize}
+        \item $y_i$ -- действительное значение;
+        \item $\hat{y}_i$ -- значение, полученное моделью.
+    \end{itemize}
+\item $v$ -- общая сумма квадратов. Представляет собой отклонение значений зависимой переменной от выборочного среднего значения зависимой переменной. По сути, общая сумма квадратов количественно определяет общую вариацию в выборке. Его можно определить по следующей формуле:
+\begin{equation}
+    v = \sum\limits_{i=1}^{n} \left(y_i-\bar{y}_i\right)^2
+\end{equation}
+\begin{itemize}
+        \item $y_i$ -- действительное значение;
+        \item $\bar{y}_i$ -- среднее значение.
+    \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Модель 012}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model\PYZus{}012}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model\PYZus{}012}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Модель 12}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model\PYZus{}12}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}notfull}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{model\PYZus{}12}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}12}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Модель 012
+0.8135462211671235
+[[ 43.40571923 543.68112196   9.65241689]
+ [ 50.90158838 562.20556561  15.87171834]
+ [ 46.43032235 552.39883876  12.27512113]
+ [ 47.8070884  554.49364847  13.29834493]]
+Модель 12
+-16.94187285805916
+[[ 36.32865331 440.61778227   5.53561853]
+ [ 48.04352244 484.47184626  13.96828786]
+ [ 41.28359463 459.47902463   8.88703558]
+ [ 43.18840615 465.67895223  10.44771188]]
+    \end{Verbatim}
+
+    Как видно, модель с раздутой размерностью показала себя лучше. Построим
+график сходимости каждой из моделей
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{y\PYZus{}curve\PYZus{}012} \PY{o}{=} \PY{n}{model\PYZus{}012}\PY{o}{.}\PY{n}{loss\PYZus{}curve\PYZus{}}
+\PY{n}{x\PYZus{}curve\PYZus{}012} \PY{o}{=} \PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}curve\PYZus{}012}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Модель 012 сошлась за }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x\PYZus{}curve\PYZus{}012}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ итераций, потери составили }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}012}\PY{o}{.}\PY{n}{best\PYZus{}loss\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{y\PYZus{}curve\PYZus{}12} \PY{o}{=} \PY{n}{model\PYZus{}12}\PY{o}{.}\PY{n}{loss\PYZus{}curve\PYZus{}}
+\PY{n}{x\PYZus{}curve\PYZus{}12} \PY{o}{=} \PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}curve\PYZus{}12}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Модель 12 сошлась за }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x\PYZus{}curve\PYZus{}12}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ итераций, потери составили }\PY{l+s+si}{\PYZob{}}\PY{n}{model\PYZus{}12}\PY{o}{.}\PY{n}{best\PYZus{}loss\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}curve\PYZus{}12}\PY{p}{,} \PY{n}{y\PYZus{}curve\PYZus{}12}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Модель 12}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}curve\PYZus{}012}\PY{p}{,} \PY{n}{y\PYZus{}curve\PYZus{}012}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Модель 012}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Число итераций}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Функция потерь двух архитектур моделей}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Модель 012 сошлась за 7864 итераций, потери составили 0.05247663242357793
+Модель 12 сошлась за 4114 итераций, потери составили 0.03380976458075128
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Функция потерь двух архитектур моделей')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_2.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{ux432ux43bux438ux44fux43dux438ux435-ux447ux438ux441ux43bux430-ux441ux43aux440ux44bux442ux44bux445-ux441ux43bux43eux451ux432-ux441ux435ux442ux438-ux43dux430-ux43aux430ux447ux435ux441ux442ux432ux43e-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Влияние числа скрытых слоёв сети на качество
+модели}\label{ux432ux43bux438ux44fux43dux438ux435-ux447ux438ux441ux43bux430-ux441ux43aux440ux44bux442ux44bux445-ux441ux43bux43eux451ux432-ux441ux435ux442ux438-ux43dux430-ux43aux430ux447ux435ux441ux442ux432ux43e-ux43cux43eux434ux435ux43bux438}}
+
+Как мы убедились в прошлом разделе, модель должна иметь размерность на
+входе не ниже размерности на выходе, иначе потери \(R^2\) слишком
+высоки. Посмотрим теперь что будет, если варьировать количество скрытых
+слоёв модели (например, от 1 до 100). Необходимо помнить, что слишком
+сложная модель может переобучиться на небольшой выборке. Будем сохранять
+модели в отдельные файлы, поскольку их обучение занимает длительное
+время
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{loss} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{points} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{iters} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{layers} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}
+    \PY{n}{varymodel} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{n}{layers}\PY{p}{)}\PY{p}{)}
+    \PY{n}{varymodel}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+    \PY{n}{loss}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{best\PYZus{}loss\PYZus{}}\PY{p}{)}
+    \PY{n}{points}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{loss\PYZus{}curve\PYZus{}}\PY{p}{)}
+    \PY{n}{iters}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{n\PYZus{}iter\PYZus{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}dump(varymodel,f\PYZsq{}models/layers/\PYZob{}layers\PYZcb{}.joblib\PYZsq{})}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{layers}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Для того, чтобы не проводить многократную тренировку модели, проведём
+тренировку один раз, а в остальные будем загружать модели из готовых
+файлов.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{loss} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{points} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{iters} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{scores} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{layers} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}
+    \PY{n}{varymodel} \PY{o}{=} \PY{n}{load}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{models/layers/}\PY{l+s+si}{\PYZob{}}\PY{n}{layers}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{.joblib}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{loss}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{best\PYZus{}loss\PYZus{}}\PY{p}{)}
+    \PY{n}{points}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{loss\PYZus{}curve\PYZus{}}\PY{p}{)}
+    \PY{n}{iters}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{n\PYZus{}iter\PYZus{}}\PY{p}{)}
+    \PY{n}{scores}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{varymodel}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{loss}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{} выборочная ошибка, занулим её}
+\PY{n}{scores}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{layers} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{layers}\PY{p}{,} \PY{n}{loss}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Число слоёв}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние числа слоёв на потери при обучении}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Влияние числа слоёв на потери при обучении')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{iters}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}print(i)}
+    \PY{k}{if} \PY{p}{(}\PY{n}{i}\PY{o}{\PYZgt{}}\PY{l+m+mi}{10} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{5} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{k}{continue}
+    \PY{n}{x} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{iters}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n}{y} \PY{o}{=} \PY{n}{points}\PY{p}{[}\PY{n}{i}\PY{p}{]}   
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Слой }\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Число итераций}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Потери}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние числа слоёв на качество модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x7fe3db519d90>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Самым главным параметром при обучении будет являться её оценка. Проведём
+оценку модели
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{scores}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Число слоёв}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Оценка модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние числа слоёв на оценку модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Влияние числа слоёв на оценку модели')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Очевидно, что нас интересует всё до десяти слоёв, дальше модель начинает
+переобучаться (резкое падение оценки -- признак переобучения)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{scores}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Число слоёв}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Оценка модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние числа слоёв на оценку модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{scores}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Число слоёв }\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, оценка модели }\PY{l+s+si}{\PYZob{}}\PY{n}{scores}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Число слоёв 2, оценка модели 0.4639444511330419
+Число слоёв 3, оценка модели 0.9100311255101875
+Число слоёв 4, оценка модели 0.9265799685143974
+Число слоёв 5, оценка модели 0.8241257764470432
+Число слоёв 6, оценка модели 0.924471640369974
+Число слоёв 7, оценка модели 0
+Число слоёв 8, оценка модели 0.9244552323152719
+Число слоёв 9, оценка модели 0.8396396016693698
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Из графика видно, что лучше всего нам подходит модель с числом слоёв,
+равным 8 (далее наблюдается переобучение)
+
+    \hypertarget{ux432ux43bux438ux44fux43dux438ux435-ux444ux443ux43dux43aux446ux438ux438-ux430ux43aux442ux438ux432ux430ux446ux438ux438-ux43dux430-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux44b-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Влияние функции активации на результаты
+модели}\label{ux432ux43bux438ux44fux43dux438ux435-ux444ux443ux43dux43aux446ux438ux438-ux430ux43aux442ux438ux432ux430ux446ux438ux438-ux43dux430-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux44b-ux43cux43eux434ux435ux43bux438}}
+
+Библиотека \textit{scikit-learn} предоставляет доступ к 4 функциям
+активации:
+
+\begin{enumerate}
+    \item \textit{identity} -- функция тождества. Безоперационная активация, полезная для реализации линейного узкого места
+        \begin{equation}
+            f(x) = x
+        \end{equation}
+    \item \textit{logistic} -- сигмоидальная функция
+        \begin{equation}
+            f(x) = \frac{1}{1+e^{-x}}
+        \end{equation}
+    \item \textit{tanh} -- гиперболический тангенс
+        \begin{equation}
+            f(x) = \tanh = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}
+        \end{equation}
+    \item \textit{relu} -- линейный выпрямитель
+        \begin{equation}
+            f(x) = 
+            \begin{cases}
+                0, x<0\\
+                x, x\geqslant 0
+            \end{cases}
+        \end{equation}
+\end{enumerate}
+
+Обучим 4 модели при помощи каждой из функций активаций
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{scores\PYZus{}activation} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{model\PYZus{}identity} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                     \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{identity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}identity}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{scores\PYZus{}activation}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}identity}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model\PYZus{}logistic} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                     \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{logistic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}logistic}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{scores\PYZus{}activation}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}logistic}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model\PYZus{}tanh} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                 \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tanh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}tanh}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{scores\PYZus{}activation}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}tanh}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model\PYZus{}relu} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                 \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}relu}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{scores\PYZus{}activation}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}relu}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}
+\PY{n}{y} \PY{o}{=} \PY{n}{scores\PYZus{}activation}
+\PY{n}{my\PYZus{}xticks} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{identity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{logistic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tanh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{my\PYZus{}xticks}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Способ обучения}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Оценка модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние числа слоёв на оценку модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{scores\PYZus{}activation}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0.9275591949671171, -0.03702885533324888, -0.03702338056124536,
+0.9244552323152719]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Из графика видно, что наилучший результат показывает отсутствие функции
+активации
+
+    \hypertarget{ux432ux43bux438ux44fux43dux438ux435-ux441ux43eux43bux432ux435ux440ux430-ux43dux430-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux44b-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Влияние солвера на результаты
+модели}\label{ux432ux43bux438ux44fux43dux438ux435-ux441ux43eux43bux432ux435ux440ux430-ux43dux430-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux44b-ux43cux43eux434ux435ux43bux438}}
+
+Под солвером понимается один из алгоритмов для обучения нейросети.
+Библиотека \textit{scikit-learn} предоставляет доступ к 3 алгоритмам
+обучения:
+
+\begin{enumerate}
+    \item \textit{lbfgs} -- алгоритм Бройдена - Флетчера - Гольдфарба - Шанно, рекомендуется для небольших датасетов;
+    \item \textit{sgd} -- стохастический градиентный спуск, один из классических методов обучения; 
+    \item \textit{adam} -- метод адаптивной скорости обучения, используется по умолчанию.
+\end{enumerate}
+
+Обучим модель с использованием этих алгоритмов
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{algorithms} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{model\PYZus{}lbfgs} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                  \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{identity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{solver}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lbfgs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}lbfgs}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{algorithms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}lbfgs}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model\PYZus{}adam} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                 \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{identity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{solver}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{model\PYZus{}adam}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\PY{n}{algorithms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model\PYZus{}adam}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    При обучении модели методом стохастического градиентного спуска
+нейросеть не смогла добиться оптимальных параметров и обучение было
+аварийно завершено
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+\PY{n}{y} \PY{o}{=} \PY{n}{algorithms}
+\PY{n}{my\PYZus{}xticks} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lbfgs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{my\PYZus{}xticks}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Оптимизационный алгоритм}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Оценка модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Влияние оптимизационного алгоритма на оценку модели}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{algorithms}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0.9247783928754306, 0.9275591949671171]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{ux43fux440ux43eux432ux435ux440ux43aux430-ux43fux43eux43bux443ux447ux435ux43dux43dux43eux439-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Проверка полученной
+модели}\label{ux43fux440ux43eux432ux435ux440ux43aux430-ux43fux43eux43bux443ux447ux435ux43dux43dux43eux439-ux43cux43eux434ux435ux43bux438}}
+
+После проведения экспериментов с моделями, попробуем проверить
+полученную модель на всей экспериментальной выборке. Обучим верную
+модель
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}model} \PY{o}{=} \PY{n}{mlp}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{2000000}\PY{p}{,}\PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PYZbs{}
+                  \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{identity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{solver}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{final\PYZus{}model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}012\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+MLPRegressor(activation='identity', hidden\_layer\_sizes=8, max\_iter=2000000,
+             random\_state=1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}model}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{,}\PY{n}{y\PYZus{}matmod\PYZus{}test\PYZus{}full}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.9275591949671171
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Наша модель набрала 0.92 из 1, что является хорошим результатом при
+обучении на 4 входных данных
+
+    \hypertarget{ux43fux43eux43bux443ux447ux435ux43dux438ux435-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux43eux432-ux438ux437-ux43cux43eux434ux435ux43bux438}{%
+\subsection{Получение результатов из
+модели}\label{ux43fux43eux43bux443ux447ux435ux43dux438ux435-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux43eux432-ux438ux437-ux43cux43eux434ux435ux43bux438}}
+
+После обучения модели встаёт вопрос: как получать из неё результат. Для
+этого в библиотеке \textit{scikit-learn} в классе \textit{MLPRegressor}
+метод \textit{predict}. Попробуем получить из модели какое-нибудь
+предсказание, например, для точки \(X=[1, 0, 0]\), что соответствует
+времени напыления \(t=7.5\) минут при мощности \(P=175\) Вт
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{final\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)} 
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}\PY{l+s+s1}{Данные по модели}
+\PY{l+s+s1}{Ширина запрещённой зоны }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ нм}
+\PY{l+s+s1}{Длина отражённой волны }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{b}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ нм}
+\PY{l+s+s1}{Процент отражённого света }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{round}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ \PYZpc{}}\PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Данные по модели
+Ширина запрещённой зоны 49.63 нм
+Длина отражённой волны 558.62 нм
+Процент отражённого света 11.23 \%
+    \end{Verbatim}
+
+    Реальные данные (вычисленные по модели):
+
+\begin{itemize}
+\item Ширина запрещённой зоны 49.625 нм
+\item Длина отражённой волны 558.875 нм
+\item Процент отражённого света 11.122 \%
+\end{itemize}
+
+Отклонения составили:
+
+\begin{equation}
+\delta S = \frac{S_\text{real}-S_\text{model}}{S_\text{real}}\cdot 100\%=\frac{49.625-49.63}{49.625}\cdot 100\%=−0.01\%
+\end{equation}
+
+\begin{equation}
+\delta\lambda = \frac{\lambda_\text{real}-\lambda_\text{model}}{\lambda_\text{real}}\cdot 100\%=\frac{558.675-558.62}{558.75}\cdot 100\%=0.0098\%
+\end{equation}
+
+\begin{equation}
+\delta R = \frac{R_\text{real}-R_\text{model}}{R_\text{real}}\cdot 100\%=\frac{11.122-11.23}{11.122}\cdot 100\%=−0.97\%
+\end{equation}
+
+Отклонения от матмодели получились меньше одного процента
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Предсказание модели }\PY{l+s+si}{\PYZob{}}\PY{n}{final\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}matmod\PYZus{}test}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Реальные значения }\PY{l+s+si}{\PYZob{}}\PY{n}{y\PYZus{}matmod\PYZus{}test}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Предсказание модели [[ 46.67454687 551.32429405   8.68390614]
+ [ 54.10855985 570.35738101  14.86237024]
+ [ 49.83670087 560.09384672  11.07154185]
+ [ 51.03116084 562.44344424  12.31720136]]
+Реальные значения [[ 46.04604905 550.46206417   8.7583622 ]
+ [ 53.50741432 569.54287771  14.92911628]
+ [ 50.88119401 562.19933497  10.66683289]
+ [ 51.08499841 562.7913474   12.196274  ]]
+    \end{Verbatim}
+
+    Сохраним полученную модель
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dump}\PY{p}{(}\PY{n}{final\PYZus{}model}\PY{p}{,}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{models/final\PYZus{}model.joblib}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+['models/final\_model.joblib']
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
